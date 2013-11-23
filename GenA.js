@@ -1,11 +1,9 @@
 /*
-+--------------------------------------------------------+
-¦ GenA 1.0 - General Purpose Genetic Algorithm           ¦
-+--------------------------------------------------------¦
-¦ Copyright © 2013 Roman Chirikov (http://romashka.ch)   ¦
-+--------------------------------------------------------¦
-¦ Licensed under the MIT license.                        ¦
-+--------------------------------------------------------+
+GenA 1.0 - General Purpose Genetic Algorithm
+
+Copyright Â© 2013 Roman Chirikov (http://romashka.ch)
+
+Licensed under the MIT license.
 */
 
 function GenA(fitnessFunction, variables, param)
@@ -22,9 +20,9 @@ function GenA(fitnessFunction, variables, param)
 	if(!param) var param = {};
 
 	var defaults = {
+		iterations: 0,
 		expected: 1,
 		precision: 0.01,
-		iterations: 0,
 		populationSize: 10,
 		crossoverProb: 0.7,
 		mutationProb: 0.2,
@@ -144,7 +142,10 @@ function GenA(fitnessFunction, variables, param)
 			}
 		}
 		
-		this.onstop({iteration: this.counter, variables: this.getVars(this.bestchromoever.bits), fitness: this.bestfitnessever});
+		if(!this.raw)
+			this.onstop({iteration: this.counter, variables: this.getVars(this.bestchromoever.bits), fitness: this.bestfitnessever});
+		else
+			this.onstop({iteration: this.counter, bits: this.bestchromoever.bits, fitness: this.bestfitnessever});
 	}
 
 	this.stop = function()
