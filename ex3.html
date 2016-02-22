@@ -1,0 +1,47 @@
+<html>
+<script src="GenA.js"></script>
+<body>
+<div id="iter"></div>
+
+<script>
+var el = document.getElementById("iter");
+for(var i = 0; i < 15; i++)
+{
+	var ne = document.createElement("DIV");
+	ne.id = "cell"+i;
+	ne.style.width = "20px";
+	ne.style.height = "20px";
+	ne.style.float = "left";
+	ne.style.border = "1px solid gray";
+	ne.style.backgroundColor = "white";
+	el.appendChild(ne);
+}
+
+function fit(bits)
+{
+	var sum = 0;
+	for(var i = 0; i < bits.length; i++)
+	{
+		sum += (bits[i] == i % 2);
+	}
+	return sum;
+}
+
+var param = {expected: 15, chromLength: 15, raw: true, sleep: 0.1, timeout: 0, mutationProb: 0.2, bitMutationProb: 0.1};
+
+param.oniteration = function(data){
+	for(var i = 0; i < data.bits.length; i++)
+	{
+		if(data.bits[i] == 1)
+			document.getElementById("cell"+i).style.backgroundColor = "white";
+		else
+			document.getElementById("cell"+i).style.backgroundColor = "gray";
+	}
+};
+
+var solver = new GenA(fit, [], param);
+solver.run();
+</script>
+
+</body>
+</html>

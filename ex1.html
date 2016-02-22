@@ -1,0 +1,46 @@
+<html>
+<script src="GenA.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<body>
+<div id="chart_div" style="width: 300px; height: 200px"></div>
+<div id="iter"></div>
+
+<script>
+function f(x)
+{
+	return Math.cos(3*x) + Math.sin(x);
+}
+
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(drawChart);
+function drawChart()
+{
+	var dataarray = [['x', 'y']];
+	var from = -1, to = 4, step = 0.2;
+	for(var i = 0; i < (to-from)/step; i++)
+	{
+		var x = from + i * step;
+		var y = f(x);
+		dataarray[i+1] = [x, y];
+	}
+	var data = google.visualization.arrayToDataTable(dataarray);
+	var options = {
+	  legend: 'none',
+	  curveType: 'function',
+	};
+
+	var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+	chart.draw(data, options);
+}
+
+var vars = [{from: -1, to: 4, step: 0.01}];
+var param = {iterations: 30, sleep: 0.2};
+param.oniteration = param.onstop = function(data){
+	document.getElementById("iter").innerHTML = "iter: "+data.iteration+"; x = "+data.variables[0]+"; y = "+data.fitness;
+};
+
+var solver = new GenA(f, vars, param);
+solver.run();
+</script>
+</body>
+</html>

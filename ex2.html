@@ -1,0 +1,42 @@
+<html>
+<script src="GenA.js"></script>
+<body>
+<div id="iter"></div>
+
+<script>
+function fit(x)
+{
+	var sum = 0;
+	for(var i = 0; i < arguments.length; i++)
+	{
+		if(word[i] == " ") continue;
+		sum += Math.pow((codes[i] - arguments[i]) / 100, 2);
+	}
+	return Math.pow(1/(sum+0.01), 2);
+}
+
+var word = "HELLO WORLD";
+var codes = [], vars = [];
+for(var i = 0; i < word.length; i++)
+{
+	vars[i] = {from: 65, to: 90, step: 1}; // 30 122 - all letters
+	codes[i] = word[i].charCodeAt(0);
+}
+
+var param = {iterations: 0, expected: 10000, timeout: 40, populationSize: 100, mutationProb: 0.8, bitMutationProb: 0.1};
+param.oniteration = function(data){
+	var w = "";
+	for(var i = 0; i < data.variables.length; i++)
+	{
+		if(word[i] == " ") w += " ";
+		else w += String.fromCharCode(data.variables[i]);
+	}
+	document.getElementById("iter").innerHTML = w;
+};
+
+var solver = new GenA(fit, vars, param);
+solver.run();
+</script>
+
+</body>
+</html>
